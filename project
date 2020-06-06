@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<form action="loc" method="post">
+	<input type="submit" name="btn1" value="전송">
+</form>
+
+</body>
+</html>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>Sample02</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- HelloServlet으로 이동 -->
+  <servlet>
+  	<servlet-name>hello1</servlet-name>
+  	<servlet-class>Sample02.HelloServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>hello1</servlet-name>
+  	<url-pattern>/loc</url-pattern>
+  </servlet-mapping>
+  
+  
+  <!-- WorldServlet sample로 이동 -->
+  <servlet>
+  	<servlet-name>World03</servlet-name>
+  	<servlet-class>Sample.WorldServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>World03</servlet-name>
+  	<url-pattern>/Sample</url-pattern>
+  </servlet-mapping>
+  
+  
+</web-app>
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloServlet extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("HelloServlet doGet");
+		
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		
+		out.println(createHTML("GET"));
+		out.close();
+		
+	}
+	
+	
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		System.out.println("HelloServlet doPost");
+		
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		
+		out.println(createHTML("POST"));
+		out.close();
+		
+	}
+
+	public String createHTML(String methodType) {
+		StringBuffer sb = new StringBuffer();
+		
+		//servlet --> java로 web을 만드는 것
+		//jsp --> java + web
+		
+		sb.append("<html>");
+		sb.append("<head>");
+		sb.append("<title>Insert title here</title>");
+		sb.append("</head>");
+		
+		sb.append("<body>");
+		
+		sb.append("<p>");
+		sb.append(methodType + " 메소드가 호출되었습니다");
+		sb.append("</p>");
+		
+		sb.append("<p><a href=\"Sample\">Sample 링크</a></p>");
+		
+		sb.append("<form action=\"post.html\" method=\"post\">");
+		sb.append("<input type=\"submit\" value=\"post로 송신\">");
+		sb.append("</form>");
+		
+		sb.append("<form action=\"get.html\" method=\"get\">");
+		sb.append("<input type=\"submit\" value=\"get으로 송신\">");
+		sb.append("</form>");
+		
+		sb.append("</body>");
+		sb.append("</html>");
+		
+		
+		return new String(sb);
+		
+	}
+	
+}
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class WorldServlet extends HttpServlet {
+
+	//default 값은 doGet
+	//따라서 아무 지정하지 않은 Sample은 get을 호출됨
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("WorldServlet doGet");
+		
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		
+		out.println(createHTML("WorldServlet GET"));
+		out.close();
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("WorldServlet doPost");
+		
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		
+		out.println(createHTML("WorldServlet POST"));
+		out.close();
+		
+	}
+	
+	
+	public String createHTML(String methodType) {
+		
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("<html>");
+		sb.append("<head>");
+		sb.append("<title>Insert title here</title>");
+		sb.append("</head>");
+		
+		sb.append("<body>");
+		
+		sb.append("<p>");
+		sb.append(methodType + " 메소드가 호출되었습니다");
+		sb.append("</p>");
+		
+		sb.append("</body>");
+		sb.append("</html>");
+		
+		
+		return new String(sb);
+		
+	}
+	
+	
+
+	
+}
